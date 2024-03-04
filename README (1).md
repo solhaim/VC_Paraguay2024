@@ -1,4 +1,4 @@
-# Vc_2023training <!-- omit in toc -->
+# Vc_Paraguay2024 <!-- omit in toc -->
 Here you'll find all the commands necessary to solve the *Vibrio cholerae* command line exercise. Let's start!
 
 ## Objectives <!-- omit in toc -->
