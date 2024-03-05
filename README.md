@@ -9,7 +9,7 @@ Here you'll find all the commands necessary to solve the *Vibrio cholerae* comma
 5) Determine Vc lineage and sublineage
 
 ```
-You will be working in a user of the server named "nw070X", so all the directories mentioned in this manual will refer to directories present in this user.
+You will be working in a user of the server named "nw07", so all the directories mentioned in this manual will refer to directories present in this user.
 ```
 ## Exercise <!-- omit in toc -->
 ### Quality control
@@ -64,9 +64,9 @@ for f in *_1.fastq.gz; do trim_galore -j 8 -q 30 --paired --fastqc --illumina -o
 
 Once trim_galore has finished, check the outputs. You should see that the new files are named something like this:
 
-T_VC1_1_val_1.fq.gz
+ARIMX_1_val_1.fq.gz
 
-T_VC1_2_val_2.fq.gz
+ARIMX_2_val_2.fq.gz
 
 Let's change the names of these files, type:
 
@@ -88,10 +88,10 @@ for f in *_R1.fastq.gz; do kraken2 -db /mnt/Netapp/KRKDB/KRKDB_st8 --threads 8 -
 
 ### Assembly
 
-We now want to obtain de novo assemblies for our genomes. As this process is computationally demanding, we will do it for only one of the samples. Being in the "trimmed" directory, type: 
+We now want to obtain de novo assemblies for our genomes. This process is computationally demanding, so it will take a while to finish for all the samples. Being in the "trimmed" directory, type: 
 
 ```
-unicycler -1 T_VC4_R1.fastq.gz -2 T_VC4_R2.fastq.gz -o assemblies/T_VC4_uni.out --verbosity 2 -t 8
+for f in *_R1.fastq.gz; do unicycler -1 $f -2 ${f%_R1.fastq.gz}_R2.fastq.gz -o assemblies/${f%_R1.fastq.gz}.uni.out --verbosity 2 -t 12
 ```
 
 Once it is over, type:
@@ -102,21 +102,21 @@ cd assemblies
 for f in *.out/assembly.fasta; do cp $f ${f%_uni.out/assembly.fasta}.fasta; done
 ```
 
-Let's check the quality of our newly obtained assembly, being in the assembly folder type:
+Let's check the quality of our newly obtained assemblies, being in the assembly folder type:
 
 ```
-quast.py -t 4 T_VC4.fasta
+quast.py -t 4 *.fasta
 ```
 
 ### Annotation
 
-We will annotate, the de novo assembly we created previously. Being in the "assemblies" folder, type:
+We will annotate the de novo assemblies created previously. Being in the "assemblies" folder, type:
 
 ```
-prokka --prefix T_VC4 --outdir prokka/T_VC4.annotation --addgenes --mincontiglen 300 --cpus 4 T_VC4.fasta
+for f in *.fasta; do prokka --prefix ${f%.fasta} --outdir prokka/${f%.fasta}.annotation --addgenes --mincontiglen 300 --cpus 8 $f
 ```
 
-To explore the files produced, enter 'cd' the "prokka" folder.
+To explore the files produced, enter the "prokka" folder.
 
 ### Looking for AMR and virulence determinants
 
@@ -134,10 +134,10 @@ ariba summary ariba/out_res ariba/*res.out.dir/report.tsv
 ariba summary ariba/out_vfdb ariba/*vfdb.out.dir/report.tsv
 ```
 
-AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assembly from T_VC4. Being in the "trimmed" folder, type:
+AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assemblies. Being in the "assemblies" folder, type:
 
 ```
-amrfinder -O Vibrio_cholerae --plus -n assemblies/T_VC4.fasta -o T_VC4_amrfinderplus.tsv
+for f in *.fasta; do amrfinder -O Vibrio_cholerae --plus -n $f -o ${f%.fasta}_amrfinderplus.tsv
 ```
 
 ### Determining serogroup and serotype
