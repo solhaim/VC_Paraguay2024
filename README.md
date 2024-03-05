@@ -86,6 +86,9 @@ mkdir kraken2
 for f in *_R1.fastq.gz; do kraken2 -db /mnt/Netapp/KRKDB/KRKDB_st8 --threads 8 --gzip-compressed --paired --report kraken2/${f%_R1.fastq.gz}_kraken2.txt --use-names $f ${f%_R1.fastq.gz}_R2.fastq.gz; done
 ```
 
+To visualize all the Kraken reports at once you can use Pavian: [https://fbreitwieser.shinyapps.io/pavian/](https://fbreitwieser.shinyapps.io/pavian/).
+Upload the by selecting all the reports you want to analyze and afterwards click on "Results overview".
+
 ### Assembly
 
 We now want to obtain de novo assemblies for our genomes. This process is computationally demanding, so it will take a while to finish for all the samples. Being in the "trimmed" directory, type: 
