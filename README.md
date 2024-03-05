@@ -87,7 +87,7 @@ for f in *_R1.fastq.gz; do kraken2 -db /mnt/Netapp/KRKDB/KRKDB_st8 --threads 8 -
 ```
 
 To visualize all the Kraken reports at once you can use Pavian: [https://fbreitwieser.shinyapps.io/pavian/](https://fbreitwieser.shinyapps.io/pavian/).
-Upload them by selecting all the reports you want to analyze and afterwards click on "Results overview".
+Upload them by clicking on "Browse" and selecting all the reports you want to analyze and afterwards click on "Results overview".
 
 ### Assembly
 
