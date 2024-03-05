@@ -9,7 +9,7 @@ Here you'll find all the commands necessary to solve the *Vibrio cholerae* comma
 5) Determine Vc lineage and sublineage
 
 ```
-Each one of you will be working in a user of the server named "alu0X", so whenever you find "alu0X" in a command, change it to the correct name of the user you'll be working with.
+You will be working in a user of the server named "nw070X", so all the directories mentioned in this manual will refer to directories present in this user.
 ```
 ## Exercise <!-- omit in toc -->
 ### Quality control
@@ -17,7 +17,7 @@ First, enter the working directory where we will be working throughout the whole
 
 Type:
 ```
-cd Vc_training2023
+cd Vibrio
 ```
 
 Let's see what's inside the folder, type:
@@ -34,9 +34,24 @@ mkdir fastqc_raw
 fastqc -t 8 -o fastqc_raw *.fastq.gz
 ```
 
-To see the results of these commands `cd` to the different folders you've created previously. 
+To see the results of these commands `cd` to the "fastq_raw" folder you've created previously. You'll probably need to download the .html files to analyze them in your computer.
+
+> **Remember**: to do this, drop the .html files to the left part of your WinSCP window.
+
+**Question 1: Analysing the FastQC reports, how many reads are there? What's the mean coverage of depth for each sample?**
+
+**Question 2: With respect to quality scores, which of the two files (for each sample) has better-quality data?**
+
+**Question 3: Are these datasets contaminated with any Illumina sequencing adapter oligonucleotides?**
 
 > **Remember**: once you've enter a new directory, you can go to the previous one by typing: `cd ..`
+
+Type:
+
+```
+cd ..
+
+```
 
 Now, we want to trim our fastq files by quality as well as checking/removing Illumina adapter sequences, so type:
 
