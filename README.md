@@ -94,7 +94,7 @@ Upload them by clicking on "Browse" and selecting all the reports you want to an
 We now want to obtain de novo assemblies for our genomes. This process is computationally demanding, so it will take a while to finish for all the samples. Being in the "trimmed" directory, type: 
 
 ```
-for f in *_R1.fastq.gz; do unicycler -1 $f -2 ${f%_R1.fastq.gz}_R2.fastq.gz -o assemblies/${f%_R1.fastq.gz}.uni.out --verbosity 2 -t 12
+for f in *_R1.fastq.gz; do unicycler -1 $f -2 ${f%_R1.fastq.gz}_R2.fastq.gz -o assemblies/${f%_R1.fastq.gz}.uni.out --verbosity 2 -t 12; done
 ```
 
 Once it is over, type:
