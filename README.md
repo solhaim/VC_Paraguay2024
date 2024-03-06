@@ -134,9 +134,13 @@ for f in *_R1.fastq.gz; do ariba run --threads 8 /home/inei/secuencias/preparere
 
 for f in *_R1.fastq.gz; do ariba run --threads 8 /home/inei/secuencias/prepareref/vfdb_core_db.out/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.vfdb.out.dir; done
 
+for f in *_R1.fastq.gz; do ariba run --threads 8 /mnt/Homes/sh12/Analisis/VC/Varios/VcVF_DB_out_prepareref $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.VcVF.out.dir; done
+
 ariba summary ariba/out_res ariba/*res.out.dir/report.tsv
 
 ariba summary ariba/out_vfdb ariba/*vfdb.out.dir/report.tsv
+
+ariba summary ariba/out_vfdb ariba/*VcVF.out.dir/report.tsv
 ```
 
 AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assemblies. Being in the "assemblies" folder, type:
@@ -179,7 +183,7 @@ cd ..
 for f in *.fasta; do blastn -query $f -db serogroup/serogroup_db -out ${f%.fasta}_serogroup.txt -outfmt 6 -max_target_seqs 3; done
 ```
 
-The outputs should be open in Excel and the columns follow this nomenclature: qseqid sseqid stitle pident length mismatch gapopen qstart qend sstart send evalue bitscore
+The outputs should be open in Excel and the columns follow this nomenclature: qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 
 ### Bonus! <!-- omit in toc -->
 
