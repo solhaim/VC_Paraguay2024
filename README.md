@@ -111,7 +111,7 @@ Let's check the quality of our newly obtained assemblies, being in the assembly 
 quast.py -t 4 *.fasta
 ```
 
-To check de results look at the "results.txt" file inside `quast_results/results_XX`
+To check for the results look at the "results.txt" file inside `quast_results/results_XX/`
 
 ### Annotation
 
