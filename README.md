@@ -128,9 +128,9 @@ There are lots of softwares for this purpose but we will be using ariba (with re
 ```
 mkdir ariba
 
-for f in *_R1.fastq.gz; do ariba run --threads 6 /home/inei/secuencias/prepareref/resfinder_db.out/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.res.out.dir; done
+for f in *_R1.fastq.gz; do ariba run --threads 8 /home/inei/secuencias/prepareref/resfinder_db.out/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.res.out.dir; done
 
-for f in *_R1.fastq.gz; do ariba run --threads 6 /home/inei/secuencias/prepareref/vfdb_core_db.out/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.vfdb.out.dir; done
+for f in *_R1.fastq.gz; do ariba run --threads 8 /home/inei/secuencias/prepareref/vfdb_core_db.out/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.vfdb.out.dir; done
 
 ariba summary ariba/out_res ariba/*res.out.dir/report.tsv
 
@@ -157,13 +157,13 @@ mkdir serogroup/
 
 cd serogroup/
 
-cp /home/sh12/Analisis/VC/AnalisisVC/serogroupDB/DB_Vc_Oserogroup.fasta .
+cp /mnt/Homes/sh12/Analisis/VC/Varios/serogroupDB/DB_Vc_Oserogroup.fasta . 
 
 makeblastdb -in DB_Vc_Oserogroup.fasta -dbtype nucl -out serogroup_db
 
 cd ..
 
-blastn -query T_VC4.fasta -db serogroup/serogroup_db -out T_VC4_blast_O.txt -outfmt 6 -max_target_seqs 3
+for f in *.fasta; do blastn -query $f -db serogroup/serogroup_db -out ${f%.fasta}_serogroup.txt -outfmt 6 -max_target_seqs 3
 ```
 
 ### Bonus! <!-- omit in toc -->
@@ -171,39 +171,39 @@ blastn -query T_VC4.fasta -db serogroup/serogroup_db -out T_VC4_blast_O.txt -out
 We would like to determine the *ctxB* variant, for that we will use ariba with a custome database. Being in the trimmed folder, type:
 
 ```
-for f in *_R1.fastq.gz; do ariba run --threads 4 /home/sh12/Analisis/VC/AnalisisVC/ctxB_out_prepareref/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.ctx.out.dir; done 
+for f in *_R1.fastq.gz; do ariba run --threads 8 /mnt/Homes/sh12/Analisis/VC/Varios/ctxB_out_prepareref/ $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.ctx.out.dir; done 
 ```
 
 ### Determining the lineage of a *Vibrio cholerae* genome
 
-We will use a small collection of annotated genomes in order to build a phylogenetic tree from core genome SNPs. You can find the metadata here: [https://docs.google.com/spreadsheets/d/1nyGB5RA3eu7xlJ_BBXrF5trsQyJmqKetKuBfPbN4WvE/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1nyGB5RA3eu7xlJ_BBXrF5trsQyJmqKetKuBfPbN4WvE/edit?usp=sharing)
+We will use a collection of annotated genomes in order to build a phylogenetic tree from core genome SNPs [(Dorman et al 2020)](https://www.nature.com/articles/s41467-020-18647-7)
 
-To obtain the core genome alignment we will use [Roary](https://github.com/sanger-pathogens/Roary). Being in the "Vc_training2023" folder, type: 
-
-```
-roary -e --mafft -f roary070723 -p 12 roary_dataset/*.gff
-```
-
-Now, we want to keep the variant sites from the alignment, for that we will use [snp-sites](https://github.com/sanger-pathogens/snp-sites). Being in the "Vc_training2023" folder, type:
+To obtain the core genome alignment we will use [Roary](https://github.com/sanger-pathogens/Roary). Being in the "Vibrio" folder, type: 
 
 ```
-snp-sites -o roary070723/core_gene_alignment_snps.aln roary070723/core_gene_alignment.aln
+roary -e --mafft -f roary060324 -p 12 /mnt/Homes/sh12/Analisis/VC/Varios/dataset_roary/*.gff
 ```
 
-For building up the tree we will use [IQ-TREE](https://github.com/iqtree/iqtree2) which is an efficient and versatile phylogenomic software by maximum likelihood. Being in "roary070723" folder, type:
+Now, we want to keep the variant sites from the alignment, for that we will use [snp-sites](https://github.com/sanger-pathogens/snp-sites). Being in the "Vibrio" folder, type:
 
 ```
-iqtree -s core_gene_alignment_snps.aln -m TEST -pre vc_roary -bb 1000 -nt 12
+snp-sites -o roary060324/core_gene_alignment_snps.aln roary060324/core_gene_alignment.aln
+```
+
+For building up the tree we will use [IQ-TREE](https://github.com/iqtree/iqtree2) which is an efficient and versatile phylogenomic software by maximum likelihood. Being in "roary060324" folder, type:
+
+```
+iqtree -s core_gene_alignment_snps.aln -m TEST -pre VcPy_roary -bb 1000 -nt 12
 ```
 
 ### Determining the sublineage of a *Vibrio cholerae* 7PET genome
 
 For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task is in: [https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0](https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0)
 
-Being in the "Vc_training2023", type:
+Being in the "Vibrio", type:
 
 ```
-snippy --cpus 4 --outdir snippy_dataset/T_VC4_snippy --ref N16961.fna --R1 trimmed/T_VC4_R1.fastq.gz --R2 trimmed/T_VC4_R2.fastq.gz
+snippy --cpus 8 --outdir snippy_dataset/T_VC4_snippy --ref N16961.fna --R1 trimmed/T_VC4_R1.fastq.gz --R2 trimmed/T_VC4_R2.fastq.gz
 ```
 
 > Repeat this command for every 7PET genome.
