@@ -118,7 +118,7 @@ To check for the results look at the "results.txt" file inside `quast_results/re
 We will annotate the de novo assemblies created previously. Being in the "assemblies" folder, type:
 
 ```
-for f in *.fasta; do prokka --prefix ${f%.fasta} --outdir prokka/${f%.fasta}.annotation --addgenes --mincontiglen 300 --cpus 8 $f
+for f in *.fasta; do prokka --prefix ${f%.fasta} --outdir prokka/${f%.fasta}.annotation --addgenes --mincontiglen 300 --cpus 8 $f;done
 ```
 
 To explore the files produced, enter the "prokka" folder.
