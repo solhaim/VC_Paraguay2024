@@ -102,7 +102,7 @@ Once it is over, type:
 ```
 cd assemblies
 
-for f in *.out/assembly.fasta; do cp $f ${f%.uni.out/assembly.fasta}.fasta; done
+for f in *.out/assembly.fasta; do mv $f ${f%.uni.out/assembly.fasta}.fasta; done
 ```
 
 Let's check the quality of our newly obtained assemblies, being in the assembly folder type:
