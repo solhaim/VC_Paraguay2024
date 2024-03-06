@@ -145,6 +145,17 @@ AMRFinderPlus requires as input a fasta file, so we will try this software using
 for f in *.fasta; do amrfinder -O Vibrio_cholerae --plus -n $f -o ${f%.fasta}_amrfinderplus.tsv
 ```
 
+### MLST
+
+There are several ways to get the sequence type (ST) of your samples, we will use two options that involve uploading your fasta files to different websites:
+
+1) [Pathogenwatch](https://pathogen.watch/sign-in?redirect=/upload)
+2) [PubMLST](https://pubmlst.org/)
+
+After doing this analysis if you find novel alleles or STs it is recommended to check that your fasta files are correct and there was no error when building up the assembly before you submit your new allele/ST. For that we will map the reads of each sample against its own assembly so as to double check that the bases in the genes that make up the MLST scheme are correct. Being in the "trimmed" folder, type:
+
+for f in *_R1.fastq.gz; do bwa mem -t 16 mapeo/TravelCountryX.fasta $f ${f%_R1.fastq.gz}_R2.fastq.gz | samtools sort | samtools view --threads 16 -b -F 4 -o mapeo/${f%_R1.fastq.gz}.sorted.bam; done
+
 ### Determining serogroup and serotype
 
 To determine the serotype we will check the reports obtained with ariba and vfdb database:
@@ -165,8 +176,10 @@ makeblastdb -in DB_Vc_Oserogroup.fasta -dbtype nucl -out serogroup_db
 
 cd ..
 
-for f in *.fasta; do blastn -query $f -db serogroup/serogroup_db -out ${f%.fasta}_serogroup.txt -outfmt 6 -max_target_seqs 3
+for f in *.fasta; do blastn -query $f -db serogroup/serogroup_db -out ${f%.fasta}_serogroup.txt -outfmt 6 -max_target_seqs 3; done
 ```
+
+The outputs should be open in Excel and the columns follow this nomenclature: qseqid sseqid stitle pident length mismatch gapopen qstart qend sstart send evalue bitscore
 
 ### Bonus! <!-- omit in toc -->
 
