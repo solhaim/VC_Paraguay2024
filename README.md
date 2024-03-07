@@ -140,7 +140,7 @@ ariba summary ariba/out_res ariba/*res.out.dir/report.tsv
 
 ariba summary ariba/out_vfdb ariba/*vfdb.out.dir/report.tsv
 
-ariba summary ariba/out_vfdb ariba/*VcVF.out.dir/report.tsv
+ariba summary ariba/out_VcVF ariba/*VcVF.out.dir/report.tsv
 ```
 
 AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assemblies. Being in the "assemblies" folder, type:
