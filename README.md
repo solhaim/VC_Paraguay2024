@@ -219,13 +219,26 @@ iqtree -s core_gene_alignment_snps.aln -m TEST -pre VcPy_roary -bb 1000 -nt 12
 
 For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task is in: [https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0](https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0)
 
-Being in the "Vibrio", type:
+Being in the "Vibrio" folder, type:
 
 ```
-snippy --cpus 8 --outdir snippy_dataset/T_VC4_snippy --ref N16961.fna --R1 trimmed/T_VC4_R1.fastq.gz --R2 trimmed/T_VC4_R2.fastq.gz
+mkdir 7PET
+
+cd 7PET
+
+ln -S /mnt/Homes/nw07/Vibrio/trimmed/ARIMVC592P-96_*.fastq.gz .
+
 ```
 
-> Repeat this command for every 7PET genome.
+> Repeat the `ln` command for each 7PET genome.
+
+Being in the "7PET" folder, type:
+
+```
+for f in for f in *_R1.fastq.gz; do snippy --cpus 16 --outdir snippy_dataset/${f%_1.fastq.gz}_snippy --ref /mnt/Homes/sh12/Analisis/VC/Varios/N16961.fna --R1 $f --R2 ${f%_1.fastq.gz}_2.fastq.gz;done
+```
+
+> Run this command only for your 7PET genomes.
 
 Now lets use 'snippy-core' to summarise all these genomes and create a multiple sequence alignment. Type: 
 
