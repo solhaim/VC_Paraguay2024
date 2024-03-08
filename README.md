@@ -156,7 +156,11 @@ There are several ways to get the sequence type (ST) of your samples, we will us
 1) [Pathogenwatch](https://pathogen.watch/sign-in?redirect=/upload)
 2) [PubMLST](https://pubmlst.org/)
 
-After doing this analysis if you find novel alleles or STs it is recommended to check that your fasta files are correct and there was no error when building up the assembly before you submit your new allele/ST. For that we will map the reads of each sample against its own assembly so as to double check that the bases in the genes that make up the MLST scheme are correct. Being in the "trimmed" folder, type:
+After doing this analysis if you find novel alleles or STs it is recommended to check that your fasta files are correct and there was no error when building up the assembly before you submit your new allele/ST. For that we will map the reads of each sample against its own assembly so as to double check that the bases in the genes that make up the MLST scheme are correct. 
+
+Being in the "assemblies" folder, type:
+
+
 
 for f in *_R1.fastq.gz; do bwa mem -t 16 mapeo/TravelCountryX.fasta $f ${f%_R1.fastq.gz}_R2.fastq.gz | samtools sort | samtools view --threads 16 -b -F 4 -o mapeo/${f%_R1.fastq.gz}.sorted.bam; done
 
@@ -217,7 +221,7 @@ iqtree -s core_gene_alignment_snps.aln -m TEST -pre VcPy_roary -bb 1000 -nt 12
 
 ### Determining the sublineage of a *Vibrio cholerae* 7PET genome
 
-For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task is in: [https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0](https://docs.google.com/spreadsheets/d/17j9f_cYUxsbDTbTWhxfRB1oPt_aXP1GjwrnmjtDdecA/edit#gid=0)
+For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task is [here](https://docs.google.com/spreadsheets/d/1AnLFJzs7M8DYFCAN9OHoiQSc1ebfIveB/edit#gid=1272352260)
 
 Being in the "Vibrio" folder, type:
 
@@ -226,7 +230,7 @@ mkdir 7PET
 
 cd 7PET
 
-ln -S /mnt/Homes/nw07/Vibrio/trimmed/ARIMVC592P-96_*.fastq.gz .
+ln -s /mnt/Homes/nw07/Vibrio/trimmed/ARIMVC592P-96_*.fastq.gz .
 
 ```
 
@@ -235,7 +239,7 @@ ln -S /mnt/Homes/nw07/Vibrio/trimmed/ARIMVC592P-96_*.fastq.gz .
 Being in the "7PET" folder, type:
 
 ```
-for f in for f in *_R1.fastq.gz; do snippy --cpus 16 --outdir snippy_dataset/${f%_1.fastq.gz}_snippy --ref /mnt/Homes/sh12/Analisis/VC/Varios/N16961.fna --R1 $f --R2 ${f%_1.fastq.gz}_2.fastq.gz;done
+for f in *_R1.fastq.gz; do snippy --cpus 16 --outdir snippy_dataset/${f%_1.fastq.gz}_snippy --ref N16961.fna --R1 $f --R2 ${f%_R1.fastq.gz}_R2.fastq.gz;done
 ```
 
 > Run this command only for your 7PET genomes.
@@ -269,6 +273,6 @@ snp-sites -c gubbins.filtered_polymorphic_sites.fasta -o clean.core.aln
 Now, let's build our tree. Type: 
 
 ```
-iqtree -s clean.core.aln -m TEST -pre vc_snippy -bb 1000 -nt 12
+iqtree -s clean.core.aln -m TEST -pre VcPy_7PET_snippy -bb 1000 -nt 12
 ```
 
