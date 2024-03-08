@@ -239,7 +239,7 @@ ln -s /mnt/Homes/nw07/Vibrio/trimmed/ARIMVC592P-96_*.fastq.gz .
 Being in the "7PET" folder, type:
 
 ```
-for f in *_R1.fastq.gz; do snippy --cpus 16 --outdir snippy_dataset/${f%_1.fastq.gz}_snippy --ref N16961.fna --R1 $f --R2 ${f%_R1.fastq.gz}_R2.fastq.gz;done
+for f in *_R1.fastq.gz; do snippy --cpus 16 --outdir snippy_dataset/${f%_R1.fastq.gz}_snippy --ref N16961.fna --R1 $f --R2 ${f%_R1.fastq.gz}_R2.fastq.gz;done
 ```
 
 > Run this command only for your 7PET genomes.
