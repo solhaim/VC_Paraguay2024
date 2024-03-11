@@ -214,7 +214,7 @@ We will use a collection of annotated genomes in order to build a phylogenetic t
 To obtain the core genome alignment we will use [Roary](https://github.com/sanger-pathogens/Roary). Being in the "Vibrio" folder, type: 
 
 ```
-roary -e --mafft -f roary060324 -p 12 /mnt/Homes/sh12/Analisis/VC/Varios/dataset_roary/*.gff
+roary -e --mafft -f roary060324 -p 12 dataset_roary/*.gff
 ```
 
 Now, we want to keep the variant sites from the alignment, for that we will use [snp-sites](https://github.com/sanger-pathogens/snp-sites). Being in the "Vibrio" folder, type:
@@ -231,7 +231,7 @@ iqtree -s core_gene_alignment_snps.aln -m TEST -pre VcPy_roary -bb 1000 -nt 12
 
 ### Determining the sublineage of a *Vibrio cholerae* 7PET genome
 
-For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task is [here](https://docs.google.com/spreadsheets/d/1AnLFJzs7M8DYFCAN9OHoiQSc1ebfIveB/edit#gid=1272352260)
+For determining the sublineage we will build up a tree from the SNPs obtained from the mapping of the reads against a 7PET reference genome (N16961). We will use [snippy](https://github.com/tseemann/snippy) to do the reference mapping. The metadata of the context dataset used in this task was sent by email, you´ll need it to look your tree in [Microreact](https://microreact.org/).
 
 Being in the "Vibrio" folder, type:
 
