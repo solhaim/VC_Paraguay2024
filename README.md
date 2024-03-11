@@ -172,6 +172,8 @@ for f in *.fasta; do bwa index $f; done
 Now, you will have to do the read mapping of each sample to its own assembly. Being in the "trimmed" folder, type:
 
 for f in *_R1.fastq.gz; do bwa mem -t 16 assemblies/mlst/${f%_R1.fastq.gz}.fasta $f ${f%_R1.fastq.gz}_R2.fastq.gz | samtools sort | samtools view --threads 16 -b -F 4 -o assemblies/mlst/${f%_R1.fastq.gz}vsassembly.sorted.bam; done
+
+for f in *.sorted.bam; do samtools index $f; done
 ```
 
 ### Determining serogroup and serotype
