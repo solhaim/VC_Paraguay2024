@@ -123,7 +123,7 @@ for f in *.fasta; do prokka --prefix ${f%.fasta} --outdir prokka/${f%.fasta}.ann
 
 To explore the files produced, enter the "prokka" folder.
 
-### Looking for AMR and virulence determinants
+### Looking for AMR, virulence determinants and PAIs
 
 There are lots of softwares for this purpose but we will be using ariba (with resfinder and vfdb databases) and AMRFinderPlus. To start, being in the "trimmed" folder, type:
 
@@ -136,11 +136,15 @@ for f in *_R1.fastq.gz; do ariba run --threads 8 /home/inei/secuencias/preparere
 
 for f in *_R1.fastq.gz; do ariba run --threads 8 /mnt/Homes/sh12/Analisis/VC/Varios/VcVF_DB_out_prepareref $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.VcVF.out.dir; done
 
+for f in *_R1.fastq.gz; do ariba run --threads 8 /mnt/Homes/sh12/Analisis/VC/Varios/islands_CTX_wbeT_WASA_out_prepareref $f ${f%_R1.fastq.gz}_R2.fastq.gz ariba/${f%_R1.fastq.gz}.PAIs.out.dir; done
+
 ariba summary ariba/out_res ariba/*res.out.dir/report.tsv
 
 ariba summary ariba/out_vfdb ariba/*vfdb.out.dir/report.tsv
 
 ariba summary ariba/out_VcVF ariba/*VcVF.out.dir/report.tsv
+
+ariba summary ariba/out_PAIs ariba/*PAIs.out.dir/report.tsv
 ```
 
 AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assemblies. Being in the "assemblies" folder, type:
