@@ -150,7 +150,7 @@ ariba summary ariba/out_PAIs ariba/*PAIs.out.dir/report.tsv
 AMRFinderPlus requires as input a fasta file, so we will try this software using the de novo assemblies. Being in the "assemblies" folder, type:
 
 ```
-for f in *.fasta; do amrfinder -O Vibrio_cholerae --plus -n $f -o ${f%.fasta}_amrfinderplus.tsv
+for f in *.fasta; do amrfinder -O Vibrio_cholerae --plus -n $f -o ${f%.fasta}_amrfinderplus.tsv;done
 ```
 
 ### MLST
